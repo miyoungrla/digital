@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Learning Hub - 영어 학습 허브</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', Arial, sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        nav {
+            background-color: #fff;
+            padding: 15px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-menu {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-menu a:hover {
+            color: #667eea;
+        }
+
+        .main-content {
+            margin-top: 40px;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        .vocabulary-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .vocab-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .vocab-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .vocab-word {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .vocab-meaning {
+            display: none;
+            margin-top: 10px;
+            color: #666;
+        }
+
+        .vocab-card.flipped .vocab-meaning {
+            display: block;
+        }
+
+        .quiz-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .quiz-question {
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .quiz-options {
+            display: grid;
+            gap: 10px;
+        }
+
+        .quiz-option {
+            padding: 15px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .quiz-option:hover {
+            border-color: #667eea;
+            background: #f5f7ff;
+        }
+
+        .quiz-option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+
+        .quiz-option.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+        }
+
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 20px;
+        }
+
+        .btn:hover {
+            background: #5a67d8;
+        }
+
+        .grammar-topic {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .grammar-topic h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .example {
+            background: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-style: italic;
+        }
+
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            max-width: 500px;
+            margin: 20px auto;
+        }
+
+        .game-card {
+            aspect-ratio: 1;
+            background: #667eea;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .game-card:hover {
+            transform: scale(1.05);
+        }
+
+        .game-card.flipped {
+            background: white;
+            color: #333;
+            border: 2px solid #667eea;
+        }
+
+        .game-card.matched {
+            background: #28a745;
+            color: white;
+        }
+
+        .score-board {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 1.2em;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #667eea;
+            width: 0%;
+            transition: width 0.5s;
+        }
+
+        .timer {
+            text-align: center;
+            font-size: 2em;
+            color: #667eea;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .game-board {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>English Learning Hub</h1>
+            <p class="subtitle">중학생을 위한 재미있는 영어 학습 공간</p>
+        </div>
+    </header>
+
+    <nav>
+        <ul class="nav-menu">
+            <li><a onclick="showSection('vocabulary')">단어 학습</a></li>
+            <li><a onclick="showSection('grammar')">문법 정리</a></li>
+            <li><a onclick="showSection('quiz')">퀴즈</a></li>
+            <li><a onclick="showSection('game')">게임</a></li>
+            <li><a onclick="showSection('progress')">학습 진도</a></li>
+        </ul>
+    </nav>
+
+    <div class="container main-content">
+        <!-- 단어 학습 섹션 -->
+        <div id="vocabulary" class="section active">
+            <div class="card">
+                <h2>오늘의 단어</h2>
+                <p>카드를 클릭하면 뜻을 볼 수 있어요!</p>
+                <div class="vocabulary-container">
+                    <div class="vocab-card" onclick="flipCard(this)">
+                        <div class="vocab-word">Adventure</div>
+                        <div class="vocab-meaning">모험</div>
+                    </div>
+                    <div class="vocab-card" onclick="flipCard(this)">
+                        <div class="vocab-word">Courage</div>
+                        <div class="vocab-meaning">용기</div>
+                    </div>
+                    <div class="vocab-card" onclick="flipCard(this)">
+                        <div class="vocab-word">Discover</div>
+                        <div class="vocab-meaning">발견하다</div>
+                    </div>
+                    <div class="vocab-card" onclick="flipCard(this)">
+                        <div class="vocab-word">Environment</div>
+                        <div class="vocab-meaning">환경</div>
+                    </div>
+                    <div class="vocab-card" onclick="flipCard(this)">
+                        <div class="vocab-word">Friendship</div>
+                        <div class="vocab-meaning">우정</div>
+                    </div>
+                    <div class="vocab-card" onclick="flipCard(this)">
+                        <div class="vocab-word">Knowledge</div>
+                        <div class="vocab-meaning">지식</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 문법 정리 섹션 -->
+        <div id="grammar" class="section">
+            <div class="card">
+                <h2>문법 정리</h2>
+                
+                <div class="grammar-topic">
+                    <h3>현재진행형 (Present Continuous)</h3>
+                    <p><strong>형태:</strong> be동사 + 동사ing</p>
+                    <p><strong>용법:</strong> 지금 일어나고 있는 일을 표현할 때</p>
+                    <div class="example">
+                        I am studying English now. (나는 지금 영어를 공부하고 있다.)
+                    </div>
+                    <div class="example">
+                        They are playing soccer. (그들은 축구를 하고 있다.)
+                    </div>
+                </div>
+
+                <div class="grammar-topic">
+                    <h3>과거형 (Past Tense)</h3>
+                    <p><strong>규칙동사:</strong> 동사 + ed</p>
+                    <p><strong>불규칙동사:</strong> 각 동사마다 다른 형태</p>
+                    <div class="example">
+                        I visited my friend yesterday. (나는 어제 친구를 방문했다.)
+                    </div>
+                    <div class="example">
+                        She went to school. (그녀는 학교에 갔다.)
+                    </div>
+                </div>
+
+                <div class="grammar-topic">
+                    <h3>비교급 (Comparative)</h3>
+                    <p><strong>형태:</strong> 형용사 + er + than 또는 more + 형용사 + than</p>
+                    <div class="example">
+                        This book is thicker than that one. (이 책이 저 책보다 두껍다.)
+                    </div>
+                    <div class="example">
+                        English is more interesting than math. (영어가 수학보다 재미있다.)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 퀴즈 섹션 -->
+        <div id="quiz" class="section">
+            <div class="card">
+                <h2>영어 퀴즈</h2>
+                <div class="quiz-container">
+                    <div id="quiz-content">
+                        <div class="quiz-question">
+                            <span id="question-number">문제 1/5</span><br>
+                            <span id="question-text">다음 중 "beautiful"의 비교급은?</span>
+                        </div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="checkAnswer(this, false)">beautifuler</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, true)">more beautiful</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, false)">most beautiful</div>
+                            <div class="quiz-option" onclick="checkAnswer(this, false)">beautifullest</div>
+                        </div>
+                    </div>
+                    <button class="btn" onclick="nextQuestion()" style="display:none;" id="next-btn">다음 문제</button>
+                    <div class="score-board" id="score" style="display:none;">
+                        점수: <span id="score-value">0</span>/5
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 게임 섹션 -->
+        <div id="game" class="section">
+            <div class="card">
+                <h2>단어 매칭 게임</h2>
+                <p>같은 의미의 영어 단어와 한글 뜻을 찾아 매칭하세요!</p>
+                <div class="timer" id="game-timer">시간: 0초</div>
+                <div class="score-board">
+                    매칭 성공: <span id="matches">0</span>/8
+                </div>
+                <div class="game-board" id="game-board">
+                    <!-- 게임 카드들이 JavaScript로 생성됩니다 -->
+                </div>
+                <button class="btn" onclick="resetGame()">게임 다시 시작</button>
+            </div>
+        </div>
+
+        <!-- 학습 진도 섹션 -->
+        <div id="progress" class="section">
+            <div class="card">
+                <h2>나의 학습 진도</h2>
+                
+                <h3>단어 학습</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 65%;"></div>
+                </div>
+                <p>
+                <p>학습한 단어: 65개 / 100개</p>
+
+                <h3>문법 학습</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 45%;"></div>
+                </div>
+                <p>완료한 문법 단원: 9개 / 20개</p>
+
+                <h3>퀴즈 점수</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 80%;"></div>
+                </div>
+                <p>평균 점수: 80점</p>
+
+                <h3>이번 주 학습 기록</h3>
+                <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; margin-top: 20px;">
+                    <div style="text-align: center;">
+                        <div style="background: #28a745; color: white; padding: 10px; border-radius: 5px;">월</div>
+                        <p>30분</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="background: #28a745; color: white; padding: 10px; border-radius: 5px;">화</div>
+                        <p>45분</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="background: #ffc107; color: white; padding: 10px; border-radius: 5px;">수</div>
+                        <p>15분</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="background: #28a745; color: white; padding: 10px; border-radius: 5px;">목</div>
+                        <p>40분</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="background: #dc3545; color: white; padding: 10px; border-radius: 5px;">금</div>
+                        <p>0분</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="background: #6c757d; color: white; padding: 10px; border-radius: 5px;">토</div>
+                        <p>-</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="background: #6c757d; color: white; padding: 10px; border-radius: 5px;">일</div>
+                        <p>-</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 섹션 전환 함수
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        // 단어 카드 뒤집기
+        function flipCard(card) {
+            card.classList.toggle('flipped');
+        }
+
+        // 퀴즈 관련 변수
+        let currentQuestion = 0;
+        let score = 0;
+        let answered = false;
+
+        const questions = [
+            {
+                question: "다음 중 'beautiful'의 비교급은?",
+                options: ["beautifuler", "more beautiful", "most beautiful", "beautifullest"],
+                correct: 1
+            },
+            {
+                question: "'I ___ to school yesterday.' 빈칸에 알맞은 것은?",
+                options: ["go", "goes", "went", "going"],
+                correct: 2
+            },
+            {
+                question: "현재진행형으로 올바른 문장은?",
+                options: ["I am study now", "I studying now", "I am studying now", "I study now"],
+                correct: 2
+            },
+            {
+                question: "'Happy'의 반대말은?",
+                options: ["Sad", "Angry", "Tired", "Hungry"],
+                correct: 0
+            },
+            {
+                question: "'They ___ playing soccer now.' 빈칸에 알맞은 것은?",
+                options: ["is", "are", "was", "were"],
+                correct: 1
+            }
+        ];
+
+        // 퀴즈 답 체크
+        function checkAnswer(element, isCorrect) {
+            if (answered) return;
+            
+            answered = true;
+            const options = document.querySelectorAll('.quiz-option');
+            options.forEach(option => {
+                option.style.pointerEvents = 'none';
+            });
+
+            if (isCorrect) {
+                element.classList.add('correct');
+                score++;
+            } else {
+                element.classList.add('incorrect');
+                // 정답 표시
+                options[questions[currentQuestion].correct].classList.add('correct');
+            }
+
+            document.getElementById('next-btn').style.display = 'block';
+        }
+
+        // 다음 문제
+        function nextQuestion() {
+            currentQuestion++;
+            answered = false;
+
+            if (currentQuestion < questions.length) {
+                const q = questions[currentQuestion];
+                document.getElementById('question-number').textContent = `문제 ${currentQuestion + 1}/${questions.length}`;
+                document.getElementById('question-text').textContent = q.question;
+                
+                const optionsHtml = q.options.map((option, index) => 
+                    `<div class="quiz-option" onclick="checkAnswer(this, ${index === q.correct})">${option}</div>`
+                ).join('');
+                
+                document.querySelector('.quiz-options').innerHTML = optionsHtml;
+                document.getElementById('next-btn').style.display = 'none';
+            } else {
+                // 퀴즈 종료
+                document.getElementById('quiz-content').innerHTML = `
+                    <h3>퀴즈 완료!</h3>
+                    <p style="font-size: 2em; text-align: center; margin: 30px 0;">
+                        점수: ${score}/${questions.length}
+                    </p>
+                    <button class="btn" onclick="resetQuiz()">다시 도전하기</button>
+                `;
+            }
+        }
+
+        // 퀴즈 리셋
+        function resetQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            answered = false;
+            
+            const q = questions[0];
+            document.getElementById('quiz-content').innerHTML = `
+                <div class="quiz-question">
+                    <span id="question-number">문제 1/${questions.length}</span><br>
+                    <span id="question-text">${q.question}</span>
+                </div>
+                <div class="quiz-options">
+                    ${q.options.map((option, index) => 
+                        `<div class="quiz-option" onclick="checkAnswer(this, ${index === q.correct})">${option}</div>`
+                    ).join('')}
+                </div>
+            `;
+            document.getElementById('next-btn').style.display = 'none';
+        }
+
+        // 매칭 게임 관련
+        let gameCards = [];
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let gameTimer = 0;
+        let timerInterval;
+
+        const gameWords = [
+            {eng: "Book", kor: "책"},
+            {eng: "School", kor: "학교"},
+            {eng: "Friend", kor: "친구"},
+            {eng: "Happy", kor: "행복한"},
+            {eng: "Study", kor: "공부하다"},
+            {eng: "Music", kor: "음악"},
+            {eng: "Family", kor: "가족"},
+            {eng: "Love", kor: "사랑"}
+        ];
+
+        // 게임 초기화
+        function initGame() {
+            const gameBoard = document.getElementById('game-board');
+            gameBoard.innerHTML = '';
+            gameCards = [];
+            flippedCards = [];
+            matchedPairs = 0;
+            gameTimer = 0;
+            
+            // 카드 생성
+            gameWords.forEach((word, index) => {
+                gameCards.push({id: index, text: word.eng, pair: index});
+                gameCards.push({id: index + 8, text: word.kor, pair: index});
+            });
+            
+            // 카드 섞기
+            gameCards.sort(() => Math.random() - 0.5);
+            
+            // 카드 표시
+            gameCards.forEach((card, index) => {
+                const cardElement = document.createElement('div');
+                cardElement.className = 'game-card';
+                cardElement.textContent = '?';
+                cardElement.onclick = () => flipGameCard(index);
+                gameBoard.appendChild(cardElement);
+            });
+            
+            // 타이머 시작
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                gameTimer++;
+                document.getElementById('game-timer').textContent = `시간: ${gameTimer}초`;
+            }, 1000);
+        }
+
+        // 게임 카드 뒤집기
+        function flipGameCard(index) {
+            if (flippedCards.length >= 2) return;
+            if (flippedCards.includes(index)) return;
+            
+            const cards = document.querySelectorAll('.game-card');
+            const card = cards[index];
+            
+            if (card.classList.contains('matched')) return;
+            
+            card.textContent = gameCards[index].text;
+            card.classList.add('flipped');
+            flippedCards.push(index);
+            
+            if (flippedCards.length === 2) {
+                setTimeout(() => checkMatch(), 1000);
+            }
+        }
+
+        // 매칭 확인
+        function checkMatch() {
+            const cards = document.querySelectorAll('.game-card');
+            const [first, second] = flippedCards;
+            
+            if (gameCards[first].pair === gameCards[second].pair) {
+                cards[first].classList.add('matched');
+                cards[second].classList.add('matched');
+                matchedPairs++;
+                document.getElementById('matches').textContent = matchedPairs;
+                
+                if (matchedPairs === 8) {
+                    clearInterval(timerInterval);
+                    setTimeout(() => {
+                        alert(`게임 완료! 소요 시간: ${gameTimer}초`);
+                    }, 500);
+                }
+            } else {
+                cards[first].textContent = '?';
+                cards[second].textContent = '?';
+                cards[first].classList.remove('flipped');
+                cards[second].classList.remove('flipped');
+            }
+            
+            flippedCards = [];
+        }
+
+        // 게임 리셋
+        function resetGame() {
+            initGame();
+            document.getElementById('matches').textContent = '0';
+        }
+
+        // 페이지 로드 시 게임 초기화
+        window.onload = function() {
+            initGame();
+        };
+
+        // 학습 시간 추적 (실제 구현 시 localStorage 활용)
+        let studyTime = 0;
+        let studyInterval;
+
+        function startStudyTimer() {
+            studyInterval = setInterval(() => {
+                studyTime++;
+                // localStorage에 저장하여 진도 추적
+                localStorage.setItem('studyTime', studyTime);
+            }, 60000); // 1분마다 업데이트
+        }
+
+        // 페이지 로드 시 학습 타이머 시작
+        startStudyTimer();
+
+        // 페이지 떠날 때 타이머 정지
+        window.addEventListener('beforeunload', () => {
+            clearInterval(studyInterval);
+        });
+    </script>
+</body>
+</html>
